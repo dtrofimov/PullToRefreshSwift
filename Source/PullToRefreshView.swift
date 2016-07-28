@@ -17,6 +17,8 @@ public class PullToRefreshView: UIView {
     }
     
     // MARK: Variables
+    let arrowLeftOffset: CGFloat = 16
+    let titleLeftOffset: CGFloat = 10
     let contentOffsetKeyPath = "contentOffset"
     let contentSizeKeyPath = "contentSize"
     var kvoContext = "PullToRefreshKVOContext"
@@ -24,7 +26,9 @@ public class PullToRefreshView: UIView {
     private var options: PullToRefreshOption
     private var backgroundView: UIView
     private var arrow: UIImageView
-    private var indicator: UIActivityIndicatorView
+    private var spinner: SpinnerView
+    private var titleLabel: UILabel
+    
     private var scrollViewBounces: Bool = false
     private var scrollViewInsets: UIEdgeInsets = UIEdgeInsetsZero
     private var refreshCompletion: (Void -> Void)?
@@ -62,10 +66,13 @@ public class PullToRefreshView: UIView {
                 }
             case .Refreshing:
                 startAnimating()
+                setTitle(options.titleRefreshing)
             case .Pulling: //starting point
                 arrowRotationBack()
+                setTitle(options.titlePulling)
             case .Triggered:
                 arrowRotation()
+                setTitle(options.titleTriggered)
             }
         }
     }
@@ -92,16 +99,21 @@ public class PullToRefreshView: UIView {
         
         self.arrow.image = UIImage(named: PullToRefreshConst.imageName, inBundle: NSBundle(forClass: self.dynamicType), compatibleWithTraitCollection: nil)
         
-        
-        self.indicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.Gray)
-        self.indicator.bounds = self.arrow.bounds
-        self.indicator.autoresizingMask = self.arrow.autoresizingMask
-        self.indicator.hidesWhenStopped = true
-        self.indicator.color = options.indicatorColor
+        self.spinner = SpinnerView(frame: CGRectMake(0, 0, options.spinnerSize, options.spinnerSize))
+        self.spinner.lineWidth = options.spinnerLineWidth
+        self.spinner.circleRadius = options.spinnerSize / 2.0
+        self.spinner.color = options.spinnerColor
+        self.spinner.autoresizingMask = self.arrow.autoresizingMask
         self.pull = down
         
+        self.titleLabel = UILabel(frame: CGRectMake(0, 0, 0, 0))
+        self.titleLabel.text = options.titlePulling
+        self.titleLabel.textColor = options.titleColor
+        self.titleLabel.font = options.titleFont
+        
         super.init(frame: frame)
-        self.addSubview(indicator)
+        self.addSubview(spinner)
+        self.addSubview(titleLabel)
         self.addSubview(backgroundView)
         self.addSubview(arrow)
         self.autoresizingMask = .FlexibleWidth
@@ -109,9 +121,15 @@ public class PullToRefreshView: UIView {
    
     public override func layoutSubviews() {
         super.layoutSubviews()
-        self.arrow.center = CGPointMake(self.frame.size.width / 2, self.frame.size.height / 2)
-        self.arrow.frame = CGRectOffset(arrow.frame, 0, 0)
-        self.indicator.center = self.arrow.center
+        let center = CGPointMake(frame.size.width / 2, frame.size.height / 2)
+        self.arrow.center = center
+        self.arrow.frame = CGRectMake(arrowLeftOffset, arrow.frame.origin.y, arrow.frame.width, arrow.frame.height)
+        self.spinner.frame = arrow.frame
+        
+        self.titleLabel.center = center
+        let titleX = arrowLeftOffset + self.spinner.frame.width + titleLeftOffset
+        self.titleLabel.frame = CGRectMake(titleX, titleLabel.frame.origin.y, 0, 0)
+        self.titleLabel.sizeToFit()
     }
     
     public override func willMoveToSuperview(superView: UIView!) {
@@ -125,6 +143,11 @@ public class PullToRefreshView: UIView {
         if !pull {
             scrollView.addObserver(self, forKeyPath: contentSizeKeyPath, options: .Initial, context: &kvoContext)
         }
+    }
+    
+    private func setTitle(title: String) {
+        self.titleLabel.text = title
+        self.titleLabel.sizeToFit()
     }
     
     private func removeRegister() {
@@ -212,7 +235,7 @@ public class PullToRefreshView: UIView {
     // MARK: private
     
     private func startAnimating() {
-        self.indicator.startAnimating()
+        self.spinner.start()
         self.arrow.hidden = true
         guard let scrollView = superview as? UIScrollView else {
             return
@@ -245,7 +268,7 @@ public class PullToRefreshView: UIView {
     }
     
     private func stopAnimating() {
-        self.indicator.stopAnimating()
+        self.spinner.stop()
         self.arrow.hidden = false
         guard let scrollView = superview as? UIScrollView else {
             return
