@@ -19,20 +19,32 @@ struct PullToRefreshConst {
 }
 
 public struct PullToRefreshOption {
-    public var backgroundColor = UIColor.clearColor()
     
-    public var arrowImage: UIImage? = nil
+    public init() {
+        self.backgroundColor = UIColor.clearColor()
+        self.arrowImage = nil
+        self.spinnerColor = UIColor.grayColor()
+        self.spinnerLineWidth = 3.0
+        self.spinnerSize = 24
+        self.titleColor = UIColor.grayColor()
+        self.titleFont = UIFont.systemFontOfSize(14)
+        self.titlePulling = "Потяните вниз для обновления"
+        self.titleRefreshing = "Обновление"
+        self.titleTriggered = "Отпустите для обновления"
+        self.autoStopTime = 0
+        self.fixedSectionHeader = false
+    }
+    public var backgroundColor: UIColor
+    public var arrowImage: UIImage?
+    public var spinnerColor: UIColor
+    public var spinnerLineWidth: CGFloat
+    public var spinnerSize: CGFloat
+    public var titleColor: UIColor
+    public var titleFont: UIFont
+    public var titlePulling: String
+    public var titleRefreshing: String
+    public var titleTriggered: String
+    public var autoStopTime: Double         // 0 is not auto stop
+    public var fixedSectionHeader: Bool     // Update the content inset for fixed section headers
     
-    public var spinnerColor = UIColor.grayColor()
-    public var spinnerLineWidth: CGFloat = 3.0
-    public var spinnerSize: CGFloat = 24
-    
-    public var titleColor = UIColor.grayColor()
-    public var titleFont = UIFont.systemFontOfSize(14)
-    public var titlePulling = "Потяните вниз для обновления"
-    public var titleRefreshing = "Обновление"
-    public var titleTriggered = "Отпустите для обновления"
-    
-    public var autoStopTime: Double = 0 // 0 is not auto stop
-    public var fixedSectionHeader = false  // Update the content inset for fixed section headers
 }
