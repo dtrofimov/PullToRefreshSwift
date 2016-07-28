@@ -10,15 +10,18 @@ struct PullToRefreshConst {
     static let pullTag = 810
     static let pushTag = 811
     static let alpha = true
-    static let height: CGFloat = 80
-    static let imageName: String = "pulltorefresharrow.png"
+    static let height: CGFloat = 49
     static let animationDuration: Double = 0.5
     static let fixedTop = true // PullToRefreshView fixed Top
+    static let arrowLeftOffset: CGFloat = 16
+    static let titleLeftOffset: CGFloat = 10
+    static let imageName = "pulltorefresharrow.png"
 }
 
 public struct PullToRefreshOption {
     public var backgroundColor = UIColor.clearColor()
-    public var indicatorColor = UIColor.grayColor()
+    
+    public var arrowImage: UIImage? = nil
     
     public var spinnerColor = UIColor.grayColor()
     public var spinnerLineWidth: CGFloat = 3.0

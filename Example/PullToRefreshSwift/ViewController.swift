@@ -20,20 +20,20 @@ class ViewController: UIViewController, UITableViewDataSource, UITableViewDelega
         self.navigationItem.title = "Sample"
 
         self.tableView.separatorColor = UIColor(red: 224/255, green: 224/255, blue: 224/255, alpha: 1.0)
-        self.tableView.addPullRefreshHandler({ [weak self] in
+        self.tableView.addPullRefreshHandler({ [unowned self] in
             // some code
             sleep(1)
-            self?.texts.shuffle()
-            self?.tableView.reloadData()
-            self?.tableView.stopPullRefreshEver()
+            self.texts.shuffle()
+            self.tableView.reloadData()
+            self.tableView.stopPullRefreshEver()
         })
-        self.tableView.addPushRefreshHandler({ [weak self] in
-            // some code
-            sleep(1)
-            self?.texts.shuffle()
-            self?.tableView.reloadData()
-            self?.tableView.stopPushRefreshEver(true)
-            })
+//        self.tableView.addPushRefreshHandler({ [weak self] in
+//            // some code
+//            sleep(1)
+//            self?.texts.shuffle()
+//            self?.tableView.reloadData()
+//            self?.tableView.stopPushRefreshEver(true)
+//            })
     }
     
     override func viewDidAppear(animated: Bool) {

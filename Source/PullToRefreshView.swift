@@ -17,8 +17,6 @@ public class PullToRefreshView: UIView {
     }
     
     // MARK: Variables
-    let arrowLeftOffset: CGFloat = 16
-    let titleLeftOffset: CGFloat = 10
     let contentOffsetKeyPath = "contentOffset"
     let contentSizeKeyPath = "contentSize"
     var kvoContext = "PullToRefreshKVOContext"
@@ -118,16 +116,27 @@ public class PullToRefreshView: UIView {
         self.addSubview(arrow)
         self.autoresizingMask = .FlexibleWidth
     }
+    
+    public func applyOptions(options: PullToRefreshOption) {
+        self.options = options
+        self.backgroundView.backgroundColor = options.backgroundColor
+        self.spinner.lineWidth = options.spinnerLineWidth
+        self.spinner.circleRadius = options.spinnerSize / 2.0
+        self.spinner.color = options.spinnerColor
+        self.spinner.frame = CGRectMake(spinner.frame.origin.x, spinner.frame.origin.y, options.spinnerSize, options.spinnerSize)
+        self.titleLabel.textColor = options.titleColor
+        self.titleLabel.font = options.titleFont
+        self.arrow.image = options.arrowImage
+    }
    
     public override func layoutSubviews() {
         super.layoutSubviews()
         let center = CGPointMake(frame.size.width / 2, frame.size.height / 2)
         self.arrow.center = center
-        self.arrow.frame = CGRectMake(arrowLeftOffset, arrow.frame.origin.y, arrow.frame.width, arrow.frame.height)
+        self.arrow.frame = CGRectMake(PullToRefreshConst.arrowLeftOffset, arrow.frame.origin.y, arrow.frame.width, arrow.frame.height)
         self.spinner.frame = arrow.frame
-        
         self.titleLabel.center = center
-        let titleX = arrowLeftOffset + self.spinner.frame.width + titleLeftOffset
+        let titleX = PullToRefreshConst.arrowLeftOffset + self.spinner.frame.width + PullToRefreshConst.titleLeftOffset
         self.titleLabel.frame = CGRectMake(titleX, titleLabel.frame.origin.y, 0, 0)
         self.titleLabel.sizeToFit()
     }
