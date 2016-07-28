@@ -13,7 +13,7 @@ struct PullToRefreshConst {
     static let height: CGFloat = 49
     static let animationDuration: Double = 0.5
     static let fixedTop = true // PullToRefreshView fixed Top
-    static let arrowLeftOffset: CGFloat = 16
+    static let spinnerLeftOffset: CGFloat = 16
     static let titleLeftOffset: CGFloat = 10
     static let imageName = "pulltorefresharrow.png"
 }

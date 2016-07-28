@@ -127,16 +127,19 @@ public class PullToRefreshView: UIView {
         self.titleLabel.textColor = options.titleColor
         self.titleLabel.font = options.titleFont
         self.arrow.image = options.arrowImage
+        if let img = options.arrowImage {
+            self.arrow.frame = CGRectMake(arrow.frame.origin.x, arrow.frame.origin.y, img.size.width, img.size.height)
+        }
     }
    
     public override func layoutSubviews() {
         super.layoutSubviews()
         let center = CGPointMake(frame.size.width / 2, frame.size.height / 2)
-        self.arrow.center = center
-        self.arrow.frame = CGRectMake(PullToRefreshConst.arrowLeftOffset, arrow.frame.origin.y, arrow.frame.width, arrow.frame.height)
-        self.spinner.frame = arrow.frame
+        self.spinner.center = center
+        self.spinner.frame = CGRectMake(PullToRefreshConst.spinnerLeftOffset, spinner.frame.origin.y, spinner.frame.width, spinner.frame.height)
+        self.arrow.center = spinner.center
         self.titleLabel.center = center
-        let titleX = PullToRefreshConst.arrowLeftOffset + self.spinner.frame.width + PullToRefreshConst.titleLeftOffset
+        let titleX = PullToRefreshConst.spinnerLeftOffset + self.spinner.frame.width + PullToRefreshConst.titleLeftOffset
         self.titleLabel.frame = CGRectMake(titleX, titleLabel.frame.origin.y, 0, 0)
         self.titleLabel.sizeToFit()
     }
