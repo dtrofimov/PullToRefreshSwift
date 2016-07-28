@@ -36,6 +36,13 @@ public extension UIScrollView {
         addSubview(refreshView)
     }
     
+    public func applyRefreshViewOptions(options: PullToRefreshOption) {
+        let pullView = self.refreshViewWithTag(PullToRefreshConst.pullTag)
+        pullView?.applyOptions(options)
+        let pushView = self.refreshViewWithTag(PullToRefreshConst.pushTag)
+        pushView?.applyOptions(options)
+    }
+    
     public func startPullRefresh() {
         let refreshView = self.refreshViewWithTag(PullToRefreshConst.pullTag)
         refreshView?.state = .Refreshing
