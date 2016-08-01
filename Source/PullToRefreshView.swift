@@ -124,6 +124,7 @@ public class PullToRefreshView: UIView {
         self.spinner.circleRadius = options.spinnerSize / 2.0
         self.spinner.color = options.spinnerColor
         self.spinner.frame = CGRectMake(spinner.frame.origin.x, spinner.frame.origin.y, options.spinnerSize, options.spinnerSize)
+        self.titleLabel.text = options.titlePulling
         self.titleLabel.textColor = options.titleColor
         self.titleLabel.font = options.titleFont
         self.arrow.image = options.arrowImage
