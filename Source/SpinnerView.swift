@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class SpinnerView: UIView {
+class SpinnerView: UIView, CAAnimationDelegate {
     
     //MARK: Properties
     @IBInspectable var circleRadius: CGFloat = 20
@@ -144,10 +144,11 @@ class SpinnerView: UIView {
         animation.duration = animationDuration_
         animation.fromValue = 0
         animation.toValue = 2*M_PI
+        animation.delegate = self
         circlePathLayer.addAnimation(animation, forKey: Key)
     }
     
-    override func animationDidStop(anim: CAAnimation, finished flag: Bool) {
+    func animationDidStop(anim: CAAnimation, finished flag: Bool) {
         animateRotation()
     }
     
